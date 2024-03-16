@@ -10,7 +10,7 @@ Este é um projeto simples de um cronômetro desenvolvido em React com Vite.
 
 ## Acesso ao Projeto
 
-Você pode acessar o cronômetro [clicando aqui](#) (insira o link do projeto aqui).
+Você pode acessar o cronômetro (https://cronometro-react-eta.vercel.app/).
 
 ## Como Utilizar
 
