@@ -40,7 +40,7 @@ ou
 ```
 yarn dev
 ```
-2. Acesse a aplicação em seu navegador web através do endereço `[http://localhost:3000](https://cronometro-react-eta.vercel.app/)`.
+2. Acesse a aplicação em seu navegador web através do endereço [CRONOMETRO REACT](https://cronometro-react-eta.vercel.app/).
 
 ## Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue caso encontre algum problema ou para propor melhorias. Se deseja contribuir com código, por favor, siga estas etapas:
