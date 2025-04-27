@@ -80,21 +80,6 @@ h2 {
   align-items: center;
 }
 
-.footer {
-  color: #fff;
-  bottom: 0;
-  margin-bottom: -35px;
-}
-
-.footer span {
-  font-size: 0.6em;
-}
-
-.footer a {
-  color: #ffffff;
-  text-decoration: none;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

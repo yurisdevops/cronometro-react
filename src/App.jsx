@@ -3,115 +3,85 @@ import React, { useState } from "react";
 import Start from "./assets/images/start.png";
 import Reset from "./assets/images/reset.png";
 import Stop from "./assets/images/stop.png";
-
-let interval = null;
-let [segundos, minutos, horas] = [0, 0, 0];
-let [dSegundos, dMinutos, dHoras] = ["", "", ""];
+import { Footer } from "./components/Footer";
 
 function App() {
-  const [timer, setTimer] = useState({
-    horas: "00",
-    minutos: "00",
-    segundos: "00",
+  // Estado inicial do cronômetro armazenando horas, minutos e segundos
+  const [tempo, setTempo] = useState({
+    horas: 0,
+    minutos: 0,
+    segundos: 0,
   });
 
-  const displayAtual = () => {
-    horas < 10 ? (dHoras = `0` + horas) : (dHoras = horas);
-    minutos < 10 ? (dMinutos = `0` + minutos) : (dMinutos = minutos);
-    segundos < 10 ? (dSegundos = `0` + segundos) : (dSegundos = segundos);
+  // Estado para armazenar o ID do intervalo de tempo
+  const [cronometroId, setCronometroId] = useState(null);
 
-    setTimer({ horas: dHoras, minutos: dMinutos, segundos: dSegundos });
-  };
+  // Atualiza o tempo a cada segundo
+  const atualizarTempo = () => {
+    setTempo((prevTempo) => {
+      let { horas, minutos, segundos } = prevTempo;
 
-  const timerFunction = () => {
-    segundos++;
-    if (segundos >= 60) {
-      minutos += 1;
-      segundos = 0;
-    }
-    if (minutos >= 60) {
-      horas += 1;
-      minutos = 0;
-    }
+      segundos++; // Incrementa os segundos
 
-    displayAtual();
-  };
+      if (segundos >= 60) {
+        // Verifica se precisa aumentar os minutos
+        minutos++;
+        segundos = 0;
+      }
+      if (minutos >= 60) {
+        // Verifica se precisa aumentar as horas
+        horas++;
+        minutos = 0;
+      }
 
-  const start = () => {
-    if (interval) return;
-    interval = setInterval(timerFunction, 1000);
-  };
-
-  const stop = () => {
-    clearInterval(interval);
-    interval = null;
-  };
-
-  const reset = () => {
-    stop();
-    setTimer({
-      horas: "00",
-      minutos: "00",
-      segundos: "00",
+      return { horas, minutos, segundos }; // Retorna novo estado atualizado
     });
-    [segundos, minutos, horas] = [0, 0, 0];
   };
 
-  const footer = () => {
-    return (
-      <div className="footer">
-        <h3>
-          <span>
-            Desenvolvido por{" "} 
-            <a
-              href="https://www.linkedin.com/in/yuridevops/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @Yuri Souza
-            </a>
-          </span>
-        </h3>
-      </div>
-    );
+  // Inicia o cronômetro se ele já não estiver rodando
+  const start = () => {
+    if (cronometroId) return; // Evita múltiplos intervalos simultâneos
+    const id = setInterval(atualizarTempo, 1000); // Atualiza o tempo a cada segundo
+    setCronometroId(id);
   };
+
+  // Para o cronômetro e limpa o intervalo
+  const stop = () => {
+    clearInterval(cronometroId);
+    setCronometroId(null);
+  };
+
+  // Reseta o cronômetro, zerando os valores
+  const reset = () => {
+    stop(); // Para o cronômetro antes de resetar
+    setTempo({ horas: 0, minutos: 0, segundos: 0 }); // Define o tempo como 00:00:00
+  };
+
+  // Formata números menores que 10 para exibição correta (ex: 09 em vez de 9)
+  const formatarTempo = (num) => (num < 10 ? `0${num}` : num);
 
   return (
     <>
       <div className="container">
         <h1 unselectable="on">CRONOMETRO</h1>
         <h2>
-          <span>{timer.horas}:</span>
-          <span>{timer.minutos}:</span>
-          <span>{timer.segundos}</span>
+          <span>{formatarTempo(tempo.horas)}:</span>
+          <span>{formatarTempo(tempo.minutos)}:</span>
+          <span>{formatarTempo(tempo.segundos)}</span>
         </h2>
+
         <div className="buttons">
-          <button
-            className="start"
-            onClick={() => {
-              start();
-            }}
-          >
-            <img src={Start} alt="inicio" />
+          <button className="start" onClick={start}>
+            <img src={Start} alt="Início" />
           </button>
-          <button
-            className="stop"
-            onClick={() => {
-              stop();
-            }}
-          >
-            <img src={Stop} alt="pause" />
+          <button className="stop" onClick={stop}>
+            <img src={Stop} alt="Pause" />
           </button>
-          <button
-            className="reset"
-            onClick={() => {
-              reset();
-            }}
-          >
-            <img src={Reset} alt="resetar" />
+          <button className="reset" onClick={reset}>
+            <img src={Reset} alt="Resetar" />
           </button>
         </div>
-        {footer()}
+        <Footer />
       </div>
     </>
   );
